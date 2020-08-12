@@ -1,5 +1,10 @@
 # basic screen settings
 
+
+midi_keyboard_detect_interval = 10
+repeat_interval = 0.3
+mouse_move_distance = 30
+mouse_move_duration = 0.1
 screen_size = (1280, 650)
 background_image = 'white.png'
 background_size = None
@@ -7,92 +12,31 @@ piano_image = 'piano.png'
 piano_size = None
 message_color = (0, 0, 0, 255)
 fonts_size = 20
-label1_place = 300, 400
+label1_place = (300, 400)
 label2_place = 300, 350
 label3_place = 300, 450
 label_anchor_x = 'left'
 label_anchor_y = 'center'
-fonts = 'Comic Sans MS'
-bold = False
+fonts = 'Cambria'
+bold = True
 notes_image = 'playing.png'
 notes_resize_num = 1.2
 go_back_image = 'go_back.png'
 go_back_place = 50, 550
 self_play_image = 'play.png'
-self_play_place = 50, 500
+self_play_place = 50, 480
 self_midi_image = 'midi_keyboard.png'
-self_midi_place = 50, 450
+self_midi_place = 50, 410
 play_midi_image = 'play_midi.png'
-play_midi_place = 50, 400
+play_midi_place = 50, 340
+button_resize_num = 2.3
 
 # the key settings for playing 88 notes (from A1 to C9)
 # (if you have sound files that beyond these range then you can
 # modify this dictionary to play them)
 
 key_settings = {
-    'z': 'A#2',
-    'x': 'B2',
-    'c': 'C3',
-    'v': 'C#3',
-    'b': 'D3',
-    'n': 'D#3',
-    'm': 'E3',
-    ',': 'F3',
-    '.': 'F#3',
-    '/': 'G3',
-    'a': 'G#3',
-    's': 'A3',
-    'd': 'A#3',
-    'f': 'B3',
-    'g': 'C4',
-    'h': 'C#4',
-    'j': 'D4',
-    'k': 'D#4',
-    'l': 'E4',
-    ';': 'F4',
-    "'": 'F#4',
-    'enter': 'G4',
-    'tab': 'G#4',
-    'q': 'A4',
-    'w': 'A#4',
-    'e': 'B4',
-    'r': 'C5',
-    't': 'C#5',
-    'y': 'D5',
-    'u': 'D#5',
-    'i': 'E5',
-    'o': 'F5',
-    'p': 'F#5',
-    '[': 'G5',
-    ']': 'G#5',
-    '\\': 'A5',
-    '`': 'A#5',
-    '1': 'B5',
-    '2': 'C6',
-    '3': 'C#6',
-    '4': 'D6',
-    '5': 'D#6',
-    '6': 'E6',
-    '7': 'F6',
-    '8': 'F#6',
-    '9': 'G6',
-    '0': 'G#6',
-    '-': 'A6',
-    '=': 'A#6',
-    'backspace': 'B6',
-    'f1': 'C7',
-    'f2': 'C#7',
-    'f3': 'D7',
-    'f4': 'D#7',
-    'f5': 'E7',
-    'f6': 'F7',
-    'f7': 'F#7',
-    'f8': 'G7',
-    'f9': 'G#7',
-    'f10': 'A7',
-    'f11': 'A#7',
-    'f12': 'B7',
-    'print screen': 'C8',
+    'print screen': 'A1',
     'scroll lock': 'A#1',
     'insert': 'B1',
     'home': 'C2',
@@ -100,26 +44,86 @@ key_settings = {
     'delete': 'D2',
     'end': 'D#2',
     'page down': 'E2',
-    'up': 'F2',
-    'left': 'F#2',
-    'down': 'G2',
-    'right': 'G#2',
-    'num 0': 'A2',
-    'decimal': 'C5',
-    'num 1': 'C#5',
-    'num 2': 'D5',
-    'num 3': 'D#5',
-    'num 4': 'E5',
-    'num 5': 'F5',
-    'num 6': 'F#5',
-    'num 7': 'G5',
-    'num 8': 'G#5',
-    'num 9': 'A5',
-    'num /': 'A#5',
-    '*': 'B5',
-    'num -': 'C6',
-    'plus': 'C#6',
-    'enter2': 'D6'
+    'esc': 'F2',
+    '`': 'F#2',
+    '=': 'G2',
+    '\\': 'G#2',
+    'ctrl': 'A2',    
+    'alt': 'A#2',
+    'tab': 'B2',
+    'mouse move up': 'C3',
+    'mouse move down': 'C#3',
+    'mouse move left': 'D3',
+    'mouse move right': 'D#3',
+    'mouse middle click': 'E3',
+    'mouse left click': 'F3',
+    'mouse right click': 'F#3',
+    '/': 'G3',
+    '[': 'G#3',
+    ']': 'A3',
+    'left': 'A#3',
+    'right': 'B3',
+    'up': 'C4',
+    'down': 'C#4',
+    ';': 'D4',
+    "'": 'D#4',
+    ',': 'E4',
+    '.': 'F4',
+    "caps lock": 'F#4',
+    'win': 'G4',
+    'shift': 'G#4',
+    'space': 'A4',
+    'backspace': 'A#4',
+    'enter': 'B4',
+    'a': 'C5',
+    'b': 'C#5',
+    'c': 'D5',
+    'd': 'D#5',
+    'e': 'E5',
+    'f': 'F5',
+    'g': 'F#5',
+    'h': 'G5',
+    'i': 'G#5',
+    'j': 'A5',
+    'k': 'A#5',
+    'l': 'B5',
+    'm': 'C6',
+    'n': 'C#6',
+    'o': 'D6',
+    'p': 'D#6',
+    'q': 'E6',
+    'r': 'F6',
+    's': 'F#6',
+    't': 'G6',
+    'u': 'G#6',
+    'v': 'A6',
+    'w': 'A#6',
+    'x': 'B6',
+    'y': 'C7',
+    'z': 'C#7',
+    '0': 'D7',
+    '1': 'D#7',
+    '2': 'E7',
+    '3': 'F7',
+    '4': 'F#7',
+    '5': 'G7',
+    '6': 'G#7',
+    '7': 'A7',
+    '8': 'A#7',
+    '9': 'B7',
+    '-': 'C8',
+    'f1': 'C#8',
+    'f2': 'D8',
+    'f3': 'D#8',
+    'f4': 'E8',
+    'f5': 'F8',
+    'f6': 'F#8',
+    'f7': 'G8',
+    'f8': 'G#8',
+    'f9': 'A8',
+    'delete': 'A#8',
+    'f11': 'B8',
+    'f12': 'C9'
 }
 
 reverse_key_settings = {j: i for i, j in key_settings.items()}
@@ -208,6 +212,7 @@ same_note_special = False
 whole_detect = True
 return_fromchord = False
 two_show_interval = True
+poly_chord_first = False
 
 # the operations on the midi you want to play
 # show_change_pitch : a positive number: will sharp all the notes in the midi by the number; a negative number: same except flat all the notes
@@ -290,6 +295,9 @@ note_place = [
 # load sounds from the folders of sound paths when playing or not
 load_sound = True
 
+# detect chord types when the current notes change
+show_chord = True
+
 # names of intervals
 perfect_unison = 0
 minor_second = 1
@@ -336,3 +344,7 @@ color_mode = 'rainbow'
 bar_steps = 7
 bar_unit = 50
 bar_hold_increase = 5
+
+# when play midi files, if you choose to merge all tracks, get_off_drums
+# set to True will not merge the drum tracks if your midi file has
+get_off_drums = True
