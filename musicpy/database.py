@@ -1,4 +1,4 @@
-from match import match
+from .match import match
 perfect_unison, minor_second, augmented_unison, major_second,\
     diminished_third, minor_third, augmented_second, major_third,\
     diminished_fourth, perfect_fourth, augmented_third, diminished_fifth,\
@@ -69,6 +69,29 @@ standard = {
     'Db': 1,
     'Gb': 6
 }
+
+standard_lowercase = {
+    'c': 0,
+    'c#': 1,
+    'd': 2,
+    'd#': 3,
+    'e': 4,
+    'f': 5,
+    'f#': 6,
+    'g': 7,
+    'g#': 8,
+    'a': 9,
+    'a#': 10,
+    'b': 11,
+    'bb': 10,
+    'eb': 3,
+    'ab': 8,
+    'db': 1,
+    'gb': 6
+}
+
+standard.update(standard_lowercase)
+
 standard2 = {
     'C': 0,
     'C#': 1,
@@ -86,7 +109,15 @@ standard2 = {
 
 standard_dict = {'Bb': 'A#', 'Eb': 'D#', 'Ab': 'G#', 'Db': 'C#', 'Gb': 'F#'}
 
-reverse_standard_dict = {j : i for i, j in standard_dict.items()}
+standard_dict2 = {
+    i: (i.upper() if not (len(i) == 2 and i[1] == 'b') else
+        standard_dict[i[0].upper() + i[1]])
+    for i in standard_lowercase
+}
+
+reverse_standard_dict = {j: i for i, j in standard_dict.items()}
+
+standard_dict.update(standard_dict2)
 
 scaleTypes = match({
     ('major', ): [2, 2, 1, 2, 2, 2, 1],
@@ -99,7 +130,9 @@ scaleTypes = match({
     ('mixolydian', ): [2, 2, 1, 2, 2, 1, 2],
     ('locrian', ): [1, 2, 2, 1, 2, 2, 2],
     ('whole tone', ): [2, 2, 2, 2, 2, 2],
-    ('12', ): [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ('12', ): [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ('major pentatonic', ): [2, 2, 3, 2, 3],
+    ('minor pentatonic', ): [3, 2, 2, 3, 2]
 })
 modern_modes = [
     'major', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'minor', 'locrian'
@@ -108,15 +141,15 @@ modern_modes = [
 # to get better chord detection results
 chordTypes = match({
     ('major', 'M', 'maj', 'majorthird'): ((4, 7), ),
-    ('minor', 'm', 'minorthird', 'min'): ((3, 7), ),
+    ('minor', 'm', 'minorthird', 'min', '-'): ((3, 7), ),
     ('maj7', 'M7', 'major7th', 'majorseventh'): ((4, 7, 11), ),
-    ('m7', 'min7', 'minor7th', 'minorseventh'): ((3, 7, 10), ),
+    ('m7', 'min7', 'minor7th', 'minorseventh', '-7'): ((3, 7, 10), ),
     ('7', 'seven', 'seventh', 'dominant seventh', 'dom7', 'dominant7', 'germansixth'):
     ((4, 7, 10), ),
     ('minormajor7', 'minor major 7', 'mM7'): ((3, 7, 11), ),
-    ('dim', 'dim3', '-'): ((3, 6), ),
-    ('dim7', '-7'): ((3, 6, 9), ),
-    ('half-diminished7', 'ø7', 'ø', 'half-diminished', 'half-dim', 'o7', 'o', 'm7b5'):
+    ('dim', 'o'): ((3, 6), ),
+    ('dim7', 'o7'): ((3, 6, 9), ),
+    ('half-diminished7', 'ø7', 'ø', 'half-diminished', 'half-dim', 'm7b5'):
     ((3, 6, 10), ),
     ('aug', 'augmented', '+', 'aug3', '+3'): ((4, 8), ),
     ('aug7', 'augmented7', '+7'): ((4, 8, 10), ),
@@ -128,7 +161,7 @@ chordTypes = match({
     ('sus2', ): ((2, 7), ),
     ('9', 'dominant9', 'dominant-ninth', 'ninth'): ((4, 7, 10, 14), ),
     ('maj9', 'major-ninth', 'major9th', 'M9'): ((4, 7, 11, 14), ),
-    ('m9', 'minor9', 'minor9th'): ((3, 7, 10, 14), ),
+    ('m9', 'minor9', 'minor9th', '-9'): ((3, 7, 10, 14), ),
     ('augmaj9', '+maj9', '+M9', 'augM9'): ((4, 8, 11, 14), ),
     ('add6', '6', 'sixth'): ((4, 7, 9), ),
     ('m6', 'minorsixth'): ((3, 7, 9), ),
@@ -150,36 +183,27 @@ chordTypes = match({
     ('maj13sus2', 'M13sus2'): ((2, 7, 11, 17, 21), ),
     ('add4', '+4'): ((4, 5, 7), ),
     ('madd4', 'm+4'): ((3, 5, 7), ),
-    ('add24', '24', 'sus2sus4'): ((2, 5), ),
-    ('add2omit5', ): ((2, 4), ),
-    ('madd2omit5', ): ((2, 3), ),
     ('maj7b5', 'M7b5'): ((4, 6, 11), ),
     ('maj7#11', 'M7#11'): ((4, 7, 11, 18), ),
-    ('m7#11', ): ((3, 7, 10, 18), ),
-    ('7#11', ): ((4, 7, 10, 18), ),
     ('maj9#11', 'M9#11'): ((4, 7, 11, 14, 18), ),
-    ('m9#11', ): ((3, 7, 10, 14, 18), ),
-    ('9#11', ): ((4, 7, 10, 14, 18), ),
     ('69', '6/9', 'add69'): ((4, 7, 9, 14), ),
     ('m69', 'madd69'): ((3, 7, 9, 14), ),
     ('6sus4', '6sus'): ((5, 7, 9), ),
     ('6sus2', ): ((2, 7, 9), ),
     ('5', 'power chord'): ((7, ), ),
     ('5(+octave)', 'power chord(with octave)'): ((7, 12), ),
-    ('11', 'M11', 'maj11', 'eleventh', 'major 11', 'major eleventh'):
+    ('maj11', 'M11', 'eleventh', 'major 11', 'major eleventh'):
     ((4, 7, 11, 14, 17), ),
     ('m11', 'minor eleventh', 'minor 11'): ((3, 7, 10, 14, 17), ),
-    ('dominant11', 'dominant eleventh'): ((4, 7, 10, 14, 17), ),
-    ('13', 'dominant 13'): ((4, 7, 10, 14, 17, 21), ),
+    ('11', 'dominant11', 'dominant 11'): ((4, 7, 10, 14, 17), ),
+    ('13', 'dominant13', 'dominant 13'): ((4, 7, 10, 14, 17, 21), ),
     ('maj13', 'major 13', 'M13'): ((4, 7, 11, 14, 17, 21), ),
     ('m13', 'minor 13'): ((3, 7, 10, 14, 17, 21), ),
-    ('maj7add13', 'M7add13'): ((4, 7, 11, 21), ),
-    ('maj7#13', 'M7#13'): ((4, 7, 11, 14, 22), ),
     ('maj13#11', 'M13#11'): ((4, 7, 11, 14, 18, 21), ),
     ('13#11', ): ((4, 7, 10, 14, 18, 21), ),
-    ('m13#11', ): ((3, 7, 10, 14, 18, 21), ),
-    ('fifth 9th', ): ((7, 14), ),
-    ('minormajor9', 'minor major 9', 'mM9'): ((3, 7, 11, 14), )
+    ('fifth_9th', ): ((7, 14), ),
+    ('minormajor9', 'minor major 9', 'mM9'): ((3, 7, 11, 14), ),
+    ('dim(Maj7)', ): ((3, 6, 11), )
 })
 standard_reverse = {j: i for i, j in standard2.items()}
 detectScale = scaleTypes.reverse()
@@ -212,6 +236,8 @@ degree_match = {
     '11': [perfect_fourth + octave],
     '13': [major_sixth + octave]
 }
+
+reverse_degree_match = match({tuple(j): i for i, j in degree_match.items()})
 
 instruments = {
     'Acoustic Grand Piano': 1,
@@ -342,4 +368,143 @@ instruments = {
     'Helicopter': 126,
     'Applause': 127,
     'Gunshot': 128
+}
+
+reverse_instruments = {j: i for i, j in instruments.items()}
+
+mode_check_parameters = [['major', [1, 3, 5], 1], ['dorian', [2, 4, 7], 2],
+                         ['phrygian', [3, 5, 4], 3], ['lydian', [4, 6, 7], 4],
+                         ['mixolydian', [5, 7, 4], 5], ['minor', [6, 1, 3], 6],
+                         ['locrian', [7, 2, 4], 7]]
+
+chord_functions_roman_numerals = {
+    1: 'I',
+    2: 'II',
+    3: 'III',
+    4: 'IV',
+    5: 'V',
+    6: 'VI',
+    7: 'VII',
+}
+
+chord_function_dict = {
+    'major': [0, ''],
+    'minor': [1, ''],
+    'maj7': [0, 'M7'],
+    'm7': [1, '7'],
+    '7': [0, '7'],
+    'minormajor7': [1, 'M7'],
+    'dim': [1, 'o'],
+    'dim7': [1, 'o7'],
+    'half-diminished7': [1, 'ø7'],
+    'aug': [0, '+'],
+    'aug7': [0, '+7'],
+    'augmaj7': [0, '+M7'],
+    'aug6': [0, '+6'],
+    'frenchsixth': [0, '+6(french)'],
+    'aug9': [0, '+9'],
+    'sus': [0, 'sus4'],
+    'sus2': [0, 'sus2'],
+    '9': [0, '9'],
+    'maj9': [0, 'M9'],
+    'm9': [1, '9'],
+    'augmaj9': [0, '+M9'],
+    'add6': [0, 'add6'],
+    'm6': [1, 'add6'],
+    'add2': [0, 'add2'],
+    'add9': [0, 'add9'],
+    'madd2': [1, 'add2'],
+    'madd9': [1, 'add9'],
+    '7sus4': [0, '7sus4'],
+    '7sus2': [0, '7sus2'],
+    'maj7sus4': [0, 'M7sus4'],
+    'maj7sus2': [0, 'M7sus2'],
+    '9sus4': [0, '9sus4'],
+    '9sus2': [0, '9sus2'],
+    'maj9sus4': [0, 'M9sus4'],
+    '13sus4': [0, '13sus4'],
+    '13sus2': [0, '13sus2'],
+    'maj13sus4': [0, 'M13sus4'],
+    'maj13sus2': [0, 'M13sus2'],
+    'add4': [0, 'add4'],
+    'madd4': [1, 'add4'],
+    'maj7b5': [0, 'M7b5'],
+    'maj7#11': [0, 'M7#11'],
+    'maj9#11': [0, 'M9#11'],
+    '69': [0, '69'],
+    'm69': [1, '69'],
+    '6sus4': [1, '6sus4'],
+    '6sus2': [1, '6sus2'],
+    '5': [1, '5'],
+    'maj11': [0, 'M11'],
+    'm11': [1, '11'],
+    '11': [0, '11'],
+    '13': [0, '13'],
+    'maj13': [0, 'M13'],
+    'm13': [1, '13'],
+    'maj13#11': [0, 'M13#11'],
+    '13#11': [0, '13#11'],
+    'fifth_9th': [0, '5/9'],
+    'minormajor9': [1, 'M9']
+}
+
+chord_notation_dict = {
+    'major': '',
+    'minor': '-',
+    'maj7': 'M7',
+    'm7': '-7',
+    '7': '7',
+    'minormajor7': 'mM7',
+    'dim': 'o',
+    'dim7': 'o7',
+    'half-diminished7': 'ø',
+    'aug': '+',
+    'aug7': '+7',
+    'augmaj7': '+M7',
+    'aug6': '+6',
+    'frenchsixth': '+6(french)',
+    'aug9': '+9',
+    'sus': 'sus4',
+    'sus2': 'sus2',
+    '9': '9',
+    'maj9': 'M9',
+    'm9': [1, '9'],
+    'augmaj9': '+M9',
+    'add6': '6',
+    'm6': 'm6',
+    'add2': 'add2',
+    'add9': 'add9',
+    'madd2': 'madd2',
+    'madd9': 'madd9',
+    '7sus4': '7sus4',
+    '7sus2': '7sus2',
+    'maj7sus4': 'M7sus4',
+    'maj7sus2': 'M7sus2',
+    '9sus4': '9sus4',
+    '9sus2': '9sus2',
+    'maj9sus4': 'M9sus4',
+    '13sus4': '13sus4',
+    '13sus2': '13sus2',
+    'maj13sus4': 'M13sus4',
+    'maj13sus2': 'M13sus2',
+    'add4': 'add4',
+    'madd4': 'madd4',
+    'maj7b5': 'M7b5',
+    'maj7#11': 'M7#11',
+    'maj9#11': 'M9#11',
+    '69': '69',
+    'm69': 'm69',
+    '6sus4': '6sus4',
+    '6sus2': '6sus2',
+    '5': '5',
+    'maj11': 'M11',
+    'm11': 'm11',
+    '11': '11',
+    '13': '13',
+    'maj13': 'M13',
+    'm13': 'm13',
+    'maj13#11': 'M13#11',
+    '13#11': '13#11',
+    'fifth_9th': '5/9',
+    'minormajor9': 'M9'
 }
