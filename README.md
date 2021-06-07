@@ -1,6 +1,8 @@
 # Midi Keyboard Control
 
-## This software can make you control your computer with your midi keyboard, or any midi inputs from DAW
+English [中文](#这个软件可以让你用你的midi键盘或DAW控制你的电脑)
+
+## This software can make you control your computer with your midi keyboard or DAW
 
 ![image](https://github.com/Rainbow-Dreamer/midi_keyboard_control/blob/master/previews/1.jpg)
 
@@ -14,4 +16,16 @@ You can choose the MIDI input driver that matches your name of midi keyboard or 
 
 If you are not using a midi keyboard when you open the software, you can initialize virtual midi ports and connect them to your DAWs or any softwares that have midi output functions. I recommend using `loopMIDI` to initialize virtual midi ports, because it is very convenient.
 
-### 使用你的midi键盘来当做电脑键盘玩电脑
+## 这个软件可以让你用你的midi键盘或DAW控制你的电脑
+
+![image](https://github.com/Rainbow-Dreamer/midi_keyboard_control/blob/master/previews/1.jpg)
+
+本软件的使用非常简单，只需将你的midi键盘插入电脑，或者初始化虚拟midi端口并连接到DAW或任何具有midi输出功能的软件上，然后打开本软件，就可以通过midi键盘来控制你的电脑。
+
+你可以自定义你的midi键盘或DAW播放的每个键所对应的电脑动作，只需修改`packages`文件夹下`config.py`文件中的`key_settings`字典，或者你可以使用`tools`文件夹下的`change_settings.exe`来更方便地修改配置（与点击主窗口的`Change Settings`按钮一样）。
+
+电脑动作包括按电脑键盘上的键，移动鼠标的方向，鼠标的左/右/中键。
+
+你可以在MIDI输入驱动选择菜单中选择与你的MIDI键盘或虚拟MIDI端口名称相符的MIDI输入驱动。MIDI输出驱动选择菜单不会影响我们要做的事情（尽管你无论如何可以改变它）。
+
+如果你在打开软件时没有使用midi键盘，你可以初始化虚拟midi端口，并将它们连接到DAW或任何有midi输出功能的软件上。我推荐使用`loopMIDI`来初始化虚拟 midi 端口，因为它非常方便。
