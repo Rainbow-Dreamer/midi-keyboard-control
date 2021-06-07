@@ -12,7 +12,7 @@ You can customize the corresponding computer actions of each key played from you
 
 The computer actions including key press of keys on your computer keyboard, move your mouse with a direction, left/right/middle click of your mouse.
 
-You can choose the MIDI input driver that matches your name of midi keyboard or virtual midi ports in the MIDI input driver selection menu. The MIDI output driver selection menu will not affected what we want to do (although you can change it anyway).
+You can choose the MIDI input driver that matches your name of midi keyboard or virtual midi ports in the MIDI input driver selection menu. The MIDI output driver selection menu will not affect what we want to do (although you can change it anyway).
 
 If you are not using a midi keyboard when you open the software, you can initialize virtual midi ports and connect them to your DAWs or any softwares that have midi output functions. I recommend using `loopMIDI` to initialize virtual midi ports, because it is very convenient.
 
