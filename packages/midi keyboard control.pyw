@@ -1,13 +1,9 @@
-with open('packages/config.py', encoding='utf-8') as f:
+with open('packages/config.py', encoding='utf-8-sig') as f:
     exec(f.read())
 os.chdir(abs_path)
-midi_device_load = False
 pygame.mixer.init(frequency, size, channel, buffer)
-
-
-def has_load():
-    global midi_device_load
-    midi_device_load = True
+pygame.mixer.set_num_channels(maxinum_channels)
+pygame.midi.init()
 
 
 def load(dic, path, file_format, volume):
@@ -25,28 +21,18 @@ def init_midi():
     global midi_delay_time
     global wavdic
     global device
-    global last
-    if not midi_device_load:
-        has_load()
-        pygame.mixer.set_num_channels(maxinum_channels)
-        pygame.midi.init()
-        try:
-            device = pygame.midi.Input(midi_device_id)
-            current_midi_device = ''
-            midi_info = [('default', pygame.midi.get_default_input_id())]
-            midi_info += [(i, pygame.midi.get_device_info(i))
-                          for i in range(10)]
-            current_midi_device += '\n'.join([str(j) for j in midi_info])
-        except:
-            return 'error'
-        midi_delay_time = int(delay_time * 1000)
+    try:
+        device = pygame.midi.Input(midi_device_id)
+    except Exception as e:
+        print(str(e))
+        return 'error'
+    midi_delay_time = int(delay_time * 1000)
     notenames = os.listdir(sound_path)
     notenames = [x[:x.index('.')] for x in notenames]
     wavdic = load({i: i
                    for i in notenames}, sound_path, sound_format,
                   global_volume)
     current_play = []
-    last = current_play.copy()
 
 
 def play_key(current):
@@ -93,24 +79,141 @@ class Root(Tk):
         super(Root, self).__init__()
         self.title("midi keyboard control")
         self.minsize(*screen_size)
-        self.detect_msg = ttk.Label(self, text='')
+        self.detect_msg = ttk.Label(self,
+                                    text='',
+                                    font=(fonts, fonts_size, bold))
         self.current_playing = StringVar()
         self.current_play_msg = ttk.Label(self,
                                           textvariable=self.current_playing)
         self.current_play_msg.configure(font=(fonts, fonts_size, bold))
+
+        midi_info = []
+        counter = 0
+        while True:
+            current = counter, pygame.midi.get_device_info(counter)
+            counter += 1
+            if current[1] is None:
+                break
+            midi_info.append(current)
+
+        self.midi_inputs = [
+            (i[0], f'{i[1][0].decode("utf-8")}, {i[1][1].decode("utf-8")}')
+            for i in midi_info if i[1][2] == 1
+        ]
+        self.midi_outputs = [
+            (i[0], f'{i[1][0].decode("utf-8")}, {i[1][1].decode("utf-8")}')
+            for i in midi_info if i[1][2] == 0
+        ]
+        self.midi_ports = self.midi_inputs + self.midi_outputs
+        self.midi_outputs.insert(0, (-1, ''))
+        self.midi_input_label = ttk.Label(self, text='MIDI Input Driver')
+        self.midi_input_label.place(x=0, y=50)
+        self.choose_midi_input_device = ttk.Combobox(
+            self,
+            values=[i[1] for i in self.midi_inputs],
+            width=40,
+            state='readonly')
+        self.choose_midi_input_device.current(0)
+        self.choose_midi_input_device.place(x=120, y=50)
+
+        self.midi_output_label = ttk.Label(self, text='MIDI Output Driver')
+        self.midi_output_label.place(x=450, y=50)
+        self.choose_midi_output_device = ttk.Combobox(
+            self,
+            values=[i[1] for i in self.midi_outputs],
+            width=40,
+            state='readonly')
+        self.choose_midi_output_device.current(0)
+        self.choose_midi_output_device.place(x=580, y=50)
+
+        self.midi_input_ind = 0
+        global midi_device_id
+        self.midi_device_id = self.midi_inputs[0][0]
+        midi_device_id = self.midi_device_id
+
+        self.midi_device_output_id = self.midi_outputs[0][0]
+
+        self.choose_midi_input_device.bind(
+            '<<ComboboxSelected>>', lambda e: self.change_midi_device_id())
+        self.choose_midi_output_device.bind(
+            '<<ComboboxSelected>>',
+            lambda e: self.change_midi_output_device_id())
+
+        self.stop_read_input = False
+
+        self.change_settings_button = ttk.Button(
+            self, text='Change Settings', command=self.open_change_settings)
+        self.change_settings_button.place(x=700, y=300)
+        self.open_settings = False
+
         check = init_midi()
         if check == 'error':
             self.detect_msg.configure(
                 text='no midi devices detected, please check again')
-            self.detect_msg.place(x=0, y=50)
+            self.detect_msg.place(x=0, y=150)
         else:
-            self.current_play_msg.place(x=0, y=100)
             self.current_playing.set(
                 f'currently playing:  {current_play}\n\ncorresponding keys:  {show}'
             )
+            self.current_play_msg.place(x=0, y=150)
             self.read_input()
 
+    def open_change_settings(self):
+        if not self.open_settings:
+            self.open_settings = True
+        else:
+            root2.focus_force()
+            return
+        os.chdir('packages')
+        with open('change_settings.pyw', encoding='utf-8-sig') as f:
+            exec(f.read(), globals(), globals())
+
+    def change_midi_device_id(self):
+        self.stop_read_input = True
+        self.update()
+        global current_play
+        for each in show:
+            keyboard.release(each)
+        current_play.clear()
+        show.clear()
+        current_midi_input = self.choose_midi_input_device.get()
+        self.midi_device_id = self.midi_inputs[[
+            i[1] for i in self.midi_inputs
+        ].index(current_midi_input)][0]
+        global midi_device_id
+        midi_device_id = self.midi_device_id
+        check = 'good'
+        try:
+            pygame.midi.quit()
+            pygame.midi.init()
+            global device
+            device = pygame.midi.Input(midi_device_id)
+        except Exception as e:
+            print(str(e))
+            check = 'error'
+        if check == 'error':
+            self.current_play_msg.place_forget()
+            self.detect_msg.configure(
+                text='no midi devices detected, please check again')
+            self.detect_msg.place(x=0, y=150)
+        else:
+            self.detect_msg.place_forget()
+            self.current_playing.set(
+                f'currently playing:  {current_play}\n\ncorresponding keys:  {show}'
+            )
+            self.current_play_msg.place(x=0, y=150)
+            self.read_input()
+
+    def change_midi_output_device_id(self):
+        current_midi_output = self.choose_midi_output_device.get()
+        self.midi_device_output_id = self.midi_outputs[[
+            i[1] for i in self.midi_outputs
+        ].index(current_midi_output)][0]
+
     def read_input(self):
+        if self.stop_read_input:
+            self.stop_read_input = False
+            return
         current_time = time.time()
         if device.poll():
             event = device.read(1)[0]
@@ -154,4 +257,5 @@ class Root(Tk):
 root = Root()
 root.lift()
 root.attributes("-topmost", True)
+root.attributes("-topmost", 0)
 root.mainloop()

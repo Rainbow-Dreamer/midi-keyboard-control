@@ -3,7 +3,7 @@ midi_keyboard_detect_interval = 10
 repeat_interval = 0.3
 mouse_move_distance = 30
 mouse_move_duration = 0.1
-screen_size = (900, 500)
+screen_size = (1000, 500)
 fonts_size = 20
 fonts = 'Consolas'
 bold = ''
@@ -100,8 +100,6 @@ key_settings = {
 }
 
 reverse_key_settings = {j: i for i, j in key_settings.items()}
-
-midi_device_id = 2
 
 frequency = 44100
 size = -16
