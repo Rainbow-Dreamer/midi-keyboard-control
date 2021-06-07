@@ -2,7 +2,7 @@
 
 English [中文](#这个软件可以让你用你的MIDI键盘或DAW控制你的电脑)
 
-## This software can make you control your computer with your MIDI keyboard or DAW
+## This software can make you control your computer with your MIDI keyboard or DAW as computer keyboard and mouse
 
 ![image](https://github.com/Rainbow-Dreamer/midi-keyboard-control/blob/master/previews/1.jpg?raw=true)
 
@@ -16,7 +16,7 @@ You can choose the MIDI input driver that matches your name of MIDI keyboard or 
 
 If you are not using a MIDI keyboard when you open the software, you can initialize virtual MIDI ports and connect them to your DAWs or any softwares that have MIDI output functions. I recommend using `loopMIDI` to initialize virtual MIDI ports, because it is very convenient.
 
-## 这个软件可以让你用你的MIDI键盘或DAW控制你的电脑
+## 这个软件可以让你用你的MIDI键盘或DAW当作电脑键盘和鼠标控制你的电脑
 
 [English](#Midi-Keyboard-Control) 中文
 
