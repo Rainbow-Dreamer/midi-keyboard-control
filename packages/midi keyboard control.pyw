@@ -169,6 +169,7 @@ class Root(Tk):
             exec(f.read(), globals(), globals())
 
     def change_midi_device_id(self):
+        self.focus_set()
         self.stop_read_input = True
         self.update()
         global current_play
@@ -205,6 +206,7 @@ class Root(Tk):
             self.read_input()
 
     def change_midi_output_device_id(self):
+        self.focus_set()
         current_midi_output = self.choose_midi_output_device.get()
         self.midi_device_output_id = self.midi_outputs[[
             i[1] for i in self.midi_outputs
