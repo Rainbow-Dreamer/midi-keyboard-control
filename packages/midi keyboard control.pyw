@@ -143,7 +143,7 @@ class Root(Tk):
 
         self.change_settings_button = ttk.Button(
             self, text='Change Settings', command=self.open_change_settings)
-        self.change_settings_button.place(x=700, y=300)
+        self.change_settings_button.place(x=0, y=450)
         self.open_settings = False
 
         check = init_midi()
