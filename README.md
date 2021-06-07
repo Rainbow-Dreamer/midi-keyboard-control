@@ -18,6 +18,8 @@ If you are not using a midi keyboard when you open the software, you can initial
 
 ## 这个软件可以让你用你的midi键盘或DAW控制你的电脑
 
+[English](#Midi-Keyboard-Control) 中文
+
 ![image](https://github.com/Rainbow-Dreamer/midi_keyboard_control/blob/master/previews/1.jpg)
 
 本软件的使用非常简单，只需将你的midi键盘插入电脑，或者初始化虚拟midi端口并连接到DAW或任何具有midi输出功能的软件上，然后打开本软件，就可以通过midi键盘来控制你的电脑。
