@@ -1,6 +1,6 @@
 # Midi Keyboard Control
 
-English [中文](#这个软件可以让你用你的MIDI键盘或DAW控制你的电脑)
+English [中文](#这个软件可以让你用你的MIDI键盘或DAW当作电脑键盘和鼠标控制你的电脑)
 
 ## This software can make you control your computer with your MIDI keyboard or DAW as computer keyboard and mouse
 
