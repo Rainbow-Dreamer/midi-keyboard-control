@@ -229,7 +229,7 @@ class Root2(Tk):
         filename = filedialog.askopenfilename(initialdir='.',
                                               parent=self,
                                               title="choose filename",
-                                              filetype=(("all files",
+                                              filetypes=(("all files",
                                                          "*.*"), ))
         self.config_contents.delete('1.0', END)
         self.config_contents.insert(END, f"'{filename}'")
