@@ -113,7 +113,8 @@ class Root(Tk):
             values=[i[1] for i in self.midi_inputs],
             width=40,
             state='readonly')
-        self.choose_midi_input_device.current(0)
+        if self.midi_inputs:
+            self.choose_midi_input_device.current(0)
         self.choose_midi_input_device.place(x=120, y=50)
 
         self.midi_output_label = ttk.Label(self, text='MIDI Output Driver')
@@ -123,15 +124,22 @@ class Root(Tk):
             values=[i[1] for i in self.midi_outputs],
             width=40,
             state='readonly')
-        self.choose_midi_output_device.current(0)
+        if self.midi_outputs:
+            self.choose_midi_output_device.current(0)
         self.choose_midi_output_device.place(x=580, y=50)
 
         self.midi_input_ind = 0
         global midi_device_id
-        self.midi_device_id = self.midi_inputs[0][0]
+        if self.midi_inputs:
+            self.midi_device_id = self.midi_inputs[0][0]
+        else:
+            self.midi_device_id = 0
         midi_device_id = self.midi_device_id
 
-        self.midi_device_output_id = self.midi_outputs[0][0]
+        if self.midi_outputs:
+            self.midi_device_output_id = self.midi_outputs[0][0]
+        else:
+            self.midi_device_output_id = 0
 
         self.choose_midi_input_device.bind(
             '<<ComboboxSelected>>', lambda e: self.change_midi_device_id())
