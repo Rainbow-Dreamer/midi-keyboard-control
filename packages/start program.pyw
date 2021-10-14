@@ -11,6 +11,8 @@ from tkinter import filedialog
 from ast import literal_eval
 import mido
 import midiutil
+import chunk
+import fractions
 
 abs_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abs_path)
