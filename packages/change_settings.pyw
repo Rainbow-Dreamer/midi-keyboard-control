@@ -43,6 +43,7 @@ def change(var, new, is_str=True):
 
 
 class Root2(Tk):
+
     def __init__(self):
         super(Root2, self).__init__()
         self.title("Settings")
@@ -226,8 +227,7 @@ class Root2(Tk):
             self.config_contents.insert(END, current_config_value)
 
     def choose_filename(self):
-        filename = filedialog.askopenfilename(initialdir='.',
-                                              parent=self,
+        filename = filedialog.askopenfilename(parent=self,
                                               title="choose filename",
                                               filetypes=(("all files",
                                                           "*.*"), ))
@@ -237,7 +237,6 @@ class Root2(Tk):
 
     def choose_directory(self):
         directory = filedialog.askdirectory(
-            initialdir='.',
             parent=self,
             title="choose directory",
         )
