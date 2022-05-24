@@ -1,4 +1,4 @@
-with open('packages/config.py', encoding='utf-8-sig') as f:
+with open('packages/config.py', encoding='utf-8') as f:
     exec(f.read())
 os.chdir(abs_path)
 pygame.mixer.init(frequency, size, channel, buffer)
@@ -75,6 +75,7 @@ class midi_key(str):
 
 
 class Root(Tk):
+
     def __init__(self):
         super(Root, self).__init__()
         self.title("midi keyboard control")
@@ -173,7 +174,7 @@ class Root(Tk):
             root2.focus_force()
             return
         os.chdir('packages')
-        with open('change_settings.pyw', encoding='utf-8-sig') as f:
+        with open('change_settings.pyw', encoding='utf-8') as f:
             exec(f.read(), globals(), globals())
 
     def change_midi_device_id(self):

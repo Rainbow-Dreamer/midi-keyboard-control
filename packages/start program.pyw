@@ -18,7 +18,7 @@ abs_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abs_path)
 sys.path.append(abs_path)
 sys.path.append('packages')
-with open('packages/musicpy/__init__.py', encoding='utf-8-sig') as f:
+with open('packages/musicpy/__init__.py', encoding='utf-8') as f:
     exec(f.read())
 with open('packages/midi keyboard control.pyw', encoding='utf-8') as f:
     exec(f.read())
