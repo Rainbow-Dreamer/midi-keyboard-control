@@ -229,8 +229,7 @@ class Root2(Tk):
     def choose_filename(self):
         filename = filedialog.askopenfilename(parent=self,
                                               title="choose filename",
-                                              filetypes=(("all files",
-                                                          "*.*"), ))
+                                              filetypes=(("all files", "*"), ))
         self.config_contents.delete('1.0', END)
         self.config_contents.insert(END, f"'{filename}'")
         self.config_change(0)
