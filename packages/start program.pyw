@@ -9,8 +9,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from ast import literal_eval
-import mido
-import midiutil
+import mido_fix
 import chunk
 import fractions
 
